@@ -20,7 +20,7 @@ class ListActivity : AppCompatActivity() {
         // Atualiza o fragmento
         val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
         if (fragment is TransactionFragment) {
-            fragment.onResume() // força o banco a recarregar
+            fragment.onResume() // recarrega o banco
         }
     }
 }

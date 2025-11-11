@@ -19,11 +19,9 @@ class TransactionFragment : Fragment() {
 
     private lateinit var spMonth: Spinner
     private lateinit var spYear: Spinner
-
     private lateinit var btnFilterAll: Button
     private lateinit var btnFilterExpenses: Button
     private lateinit var btnFilterIncomes: Button
-
     private lateinit var tvTotal: TextView
     private lateinit var containerList: LinearLayout
 
@@ -152,7 +150,7 @@ class TransactionFragment : Fragment() {
             }
         }
 
-        // 2) filtra por categoria (despesa/receita/todos)
+        // 2) filtra por categoria
         val finalList = when (currentCategoryFilter) {
             1 -> filteredByDate.filter { !it.isIncome }  // despesas
             2 -> filteredByDate.filter { it.isIncome }   // receitas

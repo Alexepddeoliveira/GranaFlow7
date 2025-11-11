@@ -21,6 +21,7 @@ class SummaryActivity : AppCompatActivity() {
     private lateinit var spMonth: Spinner
     private lateinit var spYear: Spinner
     private lateinit var btnShare: Button
+    private lateinit var btnVerGrafico: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +37,22 @@ class SummaryActivity : AppCompatActivity() {
         spMonth = findViewById(R.id.spMonthSummary)
         spYear = findViewById(R.id.spYearSummary)
         btnShare = findViewById(R.id.btnShare)
+        btnVerGrafico = findViewById(R.id.btnVerGrafico)
 
         setupSpinners()
 
         btnShare.setOnClickListener {
             shareSummary()
+        }
+
+        // abre a tela do gráfico com o mês/ano escolhidos
+        btnVerGrafico.setOnClickListener {
+            val month = spMonth.selectedItemPosition + 1
+            val year = spYear.selectedItem.toString().toInt()
+            val intent = Intent(this, ChartActivity::class.java)
+            intent.putExtra("month", month)
+            intent.putExtra("year", year)
+            startActivity(intent)
         }
     }
 

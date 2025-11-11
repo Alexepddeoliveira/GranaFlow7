@@ -18,9 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvHomeTotalReceber: TextView
     private lateinit var tvHomeTotalMes: TextView
     private lateinit var tvHomeTotalConta: TextView
-
     private lateinit var tvResumoTitulo: TextView
-
     private lateinit var dao: LaunchDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +27,12 @@ class MainActivity : AppCompatActivity() {
 
         dao = AppDatabase.getDatabase(this).launchDao()
 
-        // atalhos
         val shortcutAdd = findViewById<LinearLayout>(R.id.shortcutAdd)
         val shortcutList = findViewById<LinearLayout>(R.id.shortcutList)
         val shortcutSummary = findViewById<LinearLayout>(R.id.shortcutSummary)
         val shortcutAbout = findViewById<LinearLayout>(R.id.shortcutAbout)
         val btnGoSummary = findViewById<Button>(R.id.btnGoSummary)
+        val btnGoCharts = findViewById<Button>(R.id.btnGoCharts)
 
         tvHomeBalance = findViewById(R.id.tvHomeBalance)
         tvHomeFaltaPagar = findViewById(R.id.tvHomeFaltaPagar)
@@ -45,11 +43,33 @@ class MainActivity : AppCompatActivity() {
         tvResumoTitulo = findViewById(R.id.tvResumoTitulo)
 
         // navegação
-        shortcutAdd.setOnClickListener { startActivity(Intent(this, AddTransactionActivity::class.java)) }
-        shortcutList.setOnClickListener { startActivity(Intent(this, ListActivity::class.java)) }
-        shortcutSummary.setOnClickListener { startActivity(Intent(this, SummaryActivity::class.java)) }
-        shortcutAbout.setOnClickListener { startActivity(Intent(this, AboutActivity::class.java)) }
-        btnGoSummary.setOnClickListener { startActivity(Intent(this, SummaryActivity::class.java)) }
+        shortcutAdd.setOnClickListener {
+            startActivity(Intent(this, AddTransactionActivity::class.java))
+        }
+        shortcutList.setOnClickListener {
+            startActivity(Intent(this, ListActivity::class.java))
+        }
+        shortcutSummary.setOnClickListener {
+            startActivity(Intent(this, SummaryActivity::class.java))
+        }
+        shortcutAbout.setOnClickListener {
+            startActivity(Intent(this, AboutActivity::class.java))
+        }
+        btnGoSummary.setOnClickListener {
+            startActivity(Intent(this, SummaryActivity::class.java))
+        }
+        btnGoCharts.setOnClickListener {
+            // manda mês/ano atual pra tela de gráfico
+            val cal = Calendar.getInstance()
+            val month = cal.get(Calendar.MONTH) + 1
+            val year = cal.get(Calendar.YEAR)
+
+            val intent = Intent(this, ChartActivity::class.java).apply {
+                putExtra("month", month)
+                putExtra("year", year)
+            }
+            startActivity(intent)
+        }
 
         updateDashboard()
     }
@@ -67,12 +87,10 @@ class MainActivity : AppCompatActivity() {
         val currentMonth = cal.get(Calendar.MONTH) + 1
         val currentYear = cal.get(Calendar.YEAR)
 
-        // mes atual
         val nomeMes = SimpleDateFormat("MMMM", Locale("pt", "BR")).format(Date())
             .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
         tvResumoTitulo.text = "Resumo financeiro — $nomeMes $currentYear"
 
-        // filtra lançamentos do mês/ano
         val periodLaunches = allLaunches.filter { launch ->
             try {
                 val d = sdf.parse(launch.date)
@@ -84,15 +102,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // cálculos principais
         val income = periodLaunches.filter { it.isIncome }.sumOf { it.amount }
         val expense = periodLaunches.filter { !it.isIncome }.sumOf { it.amount }
         val balance = income - expense
 
-        // saldo da conta
         tvHomeBalance.text = "R$ %.2f".format(balance)
 
-        // resumo financeiro
         val faltaPagar = periodLaunches.filter { !it.isIncome && !it.isPaid }.sumOf { it.amount }
         val totalPagar = periodLaunches.filter { !it.isIncome }.sumOf { it.amount }
         val totalReceber = periodLaunches.filter { it.isIncome && !it.isPaid }.sumOf { it.amount }

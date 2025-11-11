@@ -232,6 +232,17 @@
                         android:backgroundTint="@color/gf_purple"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
+
+                    <!-- NOVO BOTÃO -->
+                    <Button
+                        android:id="@+id/btnVerGrafico"
+                        android:text="Ver gráfico do período"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/gf_purple_dark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

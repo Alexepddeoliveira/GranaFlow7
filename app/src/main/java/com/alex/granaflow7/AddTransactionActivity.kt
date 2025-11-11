@@ -1,6 +1,7 @@
 package com.alex.granaflow7
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -17,9 +18,15 @@ class AddTransactionActivity : AppCompatActivity() {
     private lateinit var spCategory: Spinner
     private lateinit var btnSave: Button
     private lateinit var btnCancel: Button
+
+    // novos
+    private lateinit var tvDate: TextView
+    private lateinit var btnPickDate: Button
+
     private lateinit var dao: LaunchDao
 
     private val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private val selectedCal: Calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +40,16 @@ class AddTransactionActivity : AppCompatActivity() {
         spCategory = findViewById(R.id.spCategory)
         btnSave = findViewById(R.id.btnSave)
         btnCancel = findViewById(R.id.btnCancel)
+        tvDate = findViewById(R.id.tvDate)
+        btnPickDate = findViewById(R.id.btnPickDate)
 
         dao = AppDatabase.getDatabase(this).launchDao()
 
+        // mostra data de hoje
+        tvDate.text = sdf.format(selectedCal.time)
+
         setupCategorySpinner()
+        setupDatePicker()
 
         btnCancel.setOnClickListener { finish() }
 
@@ -45,8 +58,35 @@ class AddTransactionActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupDatePicker() {
+        btnPickDate.setOnClickListener {
+            val year = selectedCal.get(Calendar.YEAR)
+            val month = selectedCal.get(Calendar.MONTH)
+            val day = selectedCal.get(Calendar.DAY_OF_MONTH)
+
+            val dp = DatePickerDialog(
+                this,
+                { _, y, m, d ->
+                    // atualiza o calendar e o texto
+                    selectedCal.set(Calendar.YEAR, y)
+                    selectedCal.set(Calendar.MONTH, m)
+                    selectedCal.set(Calendar.DAY_OF_MONTH, d)
+                    tvDate.text = sdf.format(selectedCal.time)
+                },
+                year,
+                month,
+                day
+            )
+            dp.show()
+        }
+
+        // clicar no texto abre calendario
+        tvDate.setOnClickListener {
+            btnPickDate.performClick()
+        }
+    }
+
     private fun setupCategorySpinner() {
-        // categorias
         val defaultCategories = mutableListOf(
             "Alimentação",
             "Transporte",
@@ -57,7 +97,6 @@ class AddTransactionActivity : AppCompatActivity() {
             "Outra..."
         )
 
-        // busca categorias
         val existing = dao.getAll().map { it.category }.distinct()
         val categories = (existing + defaultCategories).distinct().toMutableList()
 
@@ -88,6 +127,8 @@ class AddTransactionActivity : AppCompatActivity() {
                     categories.add(categories.size - 1, newCat)
                     adapter.notifyDataSetChanged()
                     spCategory.setSelection(categories.indexOf(newCat))
+                } else {
+                    spCategory.setSelection(0)
                 }
                 dialog.dismiss()
             }
@@ -111,6 +152,9 @@ class AddTransactionActivity : AppCompatActivity() {
             return
         }
 
+        // data calendario
+        val chosenDate = sdf.format(selectedCal.time)
+
         val newLaunch = LaunchEntity(
             id = 0,
             title = title,
@@ -118,7 +162,7 @@ class AddTransactionActivity : AppCompatActivity() {
             isIncome = isIncome,
             isPaid = isPaid,
             category = category,
-            date = sdf.format(Date())
+            date = chosenDate
         )
 
         dao.insert(newLaunch)
