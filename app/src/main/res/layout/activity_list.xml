@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Topo -->
     <LinearLayout
         android:orientation="vertical"
         android:background="@color/gf_purple_dark"
@@ -30,7 +29,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <!-- Aqui vai o fragment que lista -->
+    <!-- Lista -->
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
@@ -38,7 +37,7 @@
         android:layout_weight="1"
         android:padding="16dp" />
 
-    <!-- HOTBAR -->
+    <!-- Hot Bar-->
     <fragment
         android:id="@+id/fragHotbar"
         android:name="com.alex.granaflow7.HotbarFragment"

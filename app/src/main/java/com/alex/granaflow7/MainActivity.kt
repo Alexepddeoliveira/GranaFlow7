@@ -1,76 +1,109 @@
 package com.alex.granaflow7
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    override fun onResume() {
-        super.onResume()
-        // Atualiza os valores
-        updateHomeCards()
-    }
+    private lateinit var tvHomeBalance: TextView
+
+    private lateinit var tvHomeFaltaPagar: TextView
+    private lateinit var tvHomeTotalPagar: TextView
+    private lateinit var tvHomeTotalReceber: TextView
+    private lateinit var tvHomeTotalMes: TextView
+    private lateinit var tvHomeTotalConta: TextView
+
+    private lateinit var tvResumoTitulo: TextView
+
+    private lateinit var dao: LaunchDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Atalhos
+        dao = AppDatabase.getDatabase(this).launchDao()
+
+        // atalhos
         val shortcutAdd = findViewById<LinearLayout>(R.id.shortcutAdd)
         val shortcutList = findViewById<LinearLayout>(R.id.shortcutList)
         val shortcutSummary = findViewById<LinearLayout>(R.id.shortcutSummary)
         val shortcutAbout = findViewById<LinearLayout>(R.id.shortcutAbout)
-
-        // visão rapida
         val btnGoSummary = findViewById<Button>(R.id.btnGoSummary)
 
-        // Ações de navegação
-        shortcutAdd.setOnClickListener {
-            startActivity(Intent(this, AddTransactionActivity::class.java))
-        }
+        tvHomeBalance = findViewById(R.id.tvHomeBalance)
+        tvHomeFaltaPagar = findViewById(R.id.tvHomeFaltaPagar)
+        tvHomeTotalPagar = findViewById(R.id.tvHomeTotalPagar)
+        tvHomeTotalReceber = findViewById(R.id.tvHomeTotalReceber)
+        tvHomeTotalMes = findViewById(R.id.tvHomeTotalMes)
+        tvHomeTotalConta = findViewById(R.id.tvHomeTotalConta)
+        tvResumoTitulo = findViewById(R.id.tvResumoTitulo)
 
-        shortcutList.setOnClickListener {
-            startActivity(Intent(this, ListActivity::class.java))
-        }
+        // navegação
+        shortcutAdd.setOnClickListener { startActivity(Intent(this, AddTransactionActivity::class.java)) }
+        shortcutList.setOnClickListener { startActivity(Intent(this, ListActivity::class.java)) }
+        shortcutSummary.setOnClickListener { startActivity(Intent(this, SummaryActivity::class.java)) }
+        shortcutAbout.setOnClickListener { startActivity(Intent(this, AboutActivity::class.java)) }
+        btnGoSummary.setOnClickListener { startActivity(Intent(this, SummaryActivity::class.java)) }
 
-        shortcutSummary.setOnClickListener {
-            startActivity(Intent(this, SummaryActivity::class.java))
-        }
-
-        shortcutAbout.setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
-        }
-
-        btnGoSummary.setOnClickListener {
-            startActivity(Intent(this, SummaryActivity::class.java))
-        }
-
-        // Atualiza ao abrir o app
-        updateHomeCards()
+        updateDashboard()
     }
 
-    private fun updateHomeCards() {
-        val tvBalance = findViewById<TextView>(R.id.tvHomeBalance)
-        val tvIncome = findViewById<TextView>(R.id.tvHomeIncome)
-        val tvExpense = findViewById<TextView>(R.id.tvHomeExpense)
+    override fun onResume() {
+        super.onResume()
+        updateDashboard()
+    }
 
-        // Pega o DAO do banco
-        val dao = AppDatabase.getDatabase(this).launchDao()
+    private fun updateDashboard() {
+        val allLaunches = dao.getAll()
+        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-        // Calcula valores
-        val income = dao.totalIncome() ?: 0.0
-        val expense = dao.totalExpense() ?: 0.0
+        val cal = Calendar.getInstance()
+        val currentMonth = cal.get(Calendar.MONTH) + 1
+        val currentYear = cal.get(Calendar.YEAR)
+
+        // mes atual
+        val nomeMes = SimpleDateFormat("MMMM", Locale("pt", "BR")).format(Date())
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        tvResumoTitulo.text = "Resumo financeiro — $nomeMes $currentYear"
+
+        // filtra lançamentos do mês/ano
+        val periodLaunches = allLaunches.filter { launch ->
+            try {
+                val d = sdf.parse(launch.date)
+                val c = Calendar.getInstance()
+                c.time = d
+                c.get(Calendar.MONTH) + 1 == currentMonth && c.get(Calendar.YEAR) == currentYear
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        // cálculos principais
+        val income = periodLaunches.filter { it.isIncome }.sumOf { it.amount }
+        val expense = periodLaunches.filter { !it.isIncome }.sumOf { it.amount }
         val balance = income - expense
 
-        // Mostra na tela com 2 casas decimais
-        tvBalance.text = "R$ %.2f".format(balance)
-        val color = if (balance >= 0) "#059669" else "#DC2626"
-        tvBalance.setTextColor(android.graphics.Color.parseColor(color))
-        tvIncome.text = "R$ %.2f".format(income)
-        tvExpense.text = "R$ %.2f".format(expense)
+        // saldo da conta
+        tvHomeBalance.text = "R$ %.2f".format(balance)
+
+        // resumo financeiro
+        val faltaPagar = periodLaunches.filter { !it.isIncome && !it.isPaid }.sumOf { it.amount }
+        val totalPagar = periodLaunches.filter { !it.isIncome }.sumOf { it.amount }
+        val totalReceber = periodLaunches.filter { it.isIncome && !it.isPaid }.sumOf { it.amount }
+        val totalRecebido = periodLaunches.filter { it.isIncome && it.isPaid }.sumOf { it.amount }
+        val despesasPagas = periodLaunches.filter { !it.isIncome && it.isPaid }.sumOf { it.amount }
+        val totalConta = totalRecebido - despesasPagas
+
+        tvHomeFaltaPagar.text = "R$ %.2f".format(faltaPagar)
+        tvHomeTotalPagar.text = "R$ %.2f".format(totalPagar)
+        tvHomeTotalReceber.text = "R$ %.2f".format(totalReceber)
+        tvHomeTotalMes.text = "R$ %.2f".format(totalRecebido)
+        tvHomeTotalConta.text = "R$ %.2f".format(totalConta)
     }
 }

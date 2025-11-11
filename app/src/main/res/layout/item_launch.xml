@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- título + pago/não pago -->
         <TextView
             android:id="@+id/tvItemTitle"
             android:text="Título"
@@ -21,6 +22,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <!-- data -->
+        <TextView
+            android:id="@+id/tvItemDate"
+            android:text="10/11/2025"
+            android:textSize="12sp"
+            android:textColor="#6B7280"
+            android:layout_marginTop="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!-- valor -->
         <TextView
             android:id="@+id/tvItemAmount"
             android:text="R$ 0,00"

@@ -10,5 +10,7 @@ data class LaunchEntity(
     val title: String,
     val amount: Double,
     val isIncome: Boolean,
-    val category: String
+    val category: String,
+    val isPaid: Boolean = false,
+    val date: String //dd/MM/yyyy
 )

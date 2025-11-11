@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [LaunchEntity::class],
-    version = 1
+    version = 4
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -24,7 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "granaflow_db"
                 )
-                    // pra manter simples agora
+                    .fallbackToDestructiveMigration() // recria se mudar a estrutura
                     .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance

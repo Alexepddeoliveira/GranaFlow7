@@ -1,71 +1,128 @@
 package com.alex.granaflow7
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.AlertDialog
 import android.os.Bundle
 import android.widget.*
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddTransactionActivity : AppCompatActivity() {
+
+    private lateinit var etTitle: EditText
+    private lateinit var etAmount: EditText
+    private lateinit var rbIncome: RadioButton
+    private lateinit var rbExpense: RadioButton
+    private lateinit var cbPaid: CheckBox
+    private lateinit var spCategory: Spinner
+    private lateinit var btnSave: Button
+    private lateinit var btnCancel: Button
+    private lateinit var dao: LaunchDao
+
+    private val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_transaction)
 
-        // pega as views
-        val etTitle = findViewById<EditText>(R.id.etTitle)
-        val etAmount = findViewById<EditText>(R.id.etAmount)
-        val rbIncome = findViewById<RadioButton>(R.id.rbIncome)
-        val rbExpense = findViewById<RadioButton>(R.id.rbExpense)
-        val spCategory = findViewById<Spinner>(R.id.spCategory)
-        val btnSave = findViewById<Button>(R.id.btnSave)
-        val btnCancel = findViewById<Button>(R.id.btnCancel)
+        etTitle = findViewById(R.id.etTitle)
+        etAmount = findViewById(R.id.etAmount)
+        rbIncome = findViewById(R.id.rbIncome)
+        rbExpense = findViewById(R.id.rbExpense)
+        cbPaid = findViewById(R.id.cbPaid)
+        spCategory = findViewById(R.id.spCategory)
+        btnSave = findViewById(R.id.btnSave)
+        btnCancel = findViewById(R.id.btnCancel)
 
-        // opções do spinner
-        val categorias = arrayOf("Alimentação", "Transporte", "Lazer", "Salário", "Outros")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categorias)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spCategory.adapter = adapter
+        dao = AppDatabase.getDatabase(this).launchDao()
 
-        // pega o DAO do banco
-        val db = AppDatabase.getDatabase(this)
-        val dao = db.launchDao()
+        setupCategorySpinner()
+
+        btnCancel.setOnClickListener { finish() }
 
         btnSave.setOnClickListener {
-            val title = etTitle.text.toString()
-            val amountText = etAmount.text.toString()
+            saveTransaction()
+        }
+    }
 
-            if (title.isBlank() || amountText.isBlank()) {
-                Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+    private fun setupCategorySpinner() {
+        // categorias
+        val defaultCategories = mutableListOf(
+            "Alimentação",
+            "Transporte",
+            "Educação",
+            "Lazer",
+            "Saúde",
+            "Moradia",
+            "Outra..."
+        )
+
+        // busca categorias
+        val existing = dao.getAll().map { it.category }.distinct()
+        val categories = (existing + defaultCategories).distinct().toMutableList()
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categories)
+        spCategory.adapter = adapter
+
+        spCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: android.view.View?, pos: Int, id: Long) {
+                if (categories[pos] == "Outra...") {
+                    showNewCategoryDialog(categories, adapter)
+                }
             }
 
-            val amount = amountText.toDoubleOrNull()
-            if (amount == null) {
-                Toast.makeText(this, "Valor inválido", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+    }
+
+    private fun showNewCategoryDialog(categories: MutableList<String>, adapter: ArrayAdapter<String>) {
+        val input = EditText(this)
+        input.hint = "Nova categoria"
+
+        AlertDialog.Builder(this)
+            .setTitle("Adicionar nova categoria")
+            .setView(input)
+            .setPositiveButton("Salvar") { dialog, _ ->
+                val newCat = input.text.toString().trim()
+                if (newCat.isNotEmpty()) {
+                    categories.add(categories.size - 1, newCat)
+                    adapter.notifyDataSetChanged()
+                    spCategory.setSelection(categories.indexOf(newCat))
+                }
+                dialog.dismiss()
             }
+            .setNegativeButton("Cancelar") { dialog, _ ->
+                spCategory.setSelection(0)
+                dialog.dismiss()
+            }
+            .show()
+    }
 
-            val isIncome = rbIncome.isChecked
+    private fun saveTransaction() {
+        val title = etTitle.text.toString().trim()
+        val amountText = etAmount.text.toString().trim()
+        val category = spCategory.selectedItem.toString()
+        val isIncome = rbIncome.isChecked
+        val isPaid = cbPaid.isChecked
+        val amount = amountText.toDoubleOrNull()
 
-            val category = spCategory.selectedItem?.toString() ?: "Outros"
-
-            // monta o item do banco
-            val launch = LaunchEntity(
-                title = title,
-                amount = amount,
-                isIncome = isIncome,
-                category = category
-            )
-
-            // salva no banco de dados
-            dao.insert(launch)
-
-            Toast.makeText(this, "Lançamento salvo!", Toast.LENGTH_SHORT).show()
-            finish()
+        if (title.isEmpty() || amount == null) {
+            Toast.makeText(this, "Preencha todos os campos corretamente.", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        btnCancel.setOnClickListener {
-            finish()
-        }
+        val newLaunch = LaunchEntity(
+            id = 0,
+            title = title,
+            amount = amount,
+            isIncome = isIncome,
+            isPaid = isPaid,
+            category = category,
+            date = sdf.format(Date())
+        )
+
+        dao.insert(newLaunch)
+        Toast.makeText(this, "Lançamento adicionado!", Toast.LENGTH_SHORT).show()
+        finish()
     }
 }

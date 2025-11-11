@@ -6,46 +6,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- TOPO ROXO -->
+    <!-- Roxo Superior -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="155dp"
+        android:layout_height="wrap_content"
         android:background="@color/gf_purple_dark"
-        android:paddingTop="32dp"
         android:paddingLeft="20dp"
+        android:paddingTop="32dp"
         android:paddingRight="20dp">
 
         <TextView
             android:id="@+id/tvGreeting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Olá,"
             android:textColor="@android:color/white"
-            android:textSize="15sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvGreeting"
+            android:layout_marginTop="0dp"
             android:text="Bem vindo ao GranaFlow7"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_below="@id/tvGreeting"
-            android:layout_marginTop="2dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <!-- ações do topo -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
+            android:textStyle="bold" />
     </RelativeLayout>
 
-    <!-- CONTEÚDO -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -59,7 +48,7 @@
             android:paddingRight="16dp"
             android:paddingBottom="16dp">
 
-            <!-- CARD CONTA -->
+            <!-- Card conta -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,7 +89,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- ATALHOS DO APP -->
+            <!-- Atalhos flutuantes -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,8 +111,6 @@
                         android:background="@color/gf_purple_soft"
                         android:gravity="center"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginStart="3dp"
                         android:padding="4dp">
 
                         <TextView
@@ -156,8 +143,6 @@
                         android:background="@color/gf_purple_soft"
                         android:gravity="center"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginStart="3dp"
                         android:padding="4dp">
 
                         <TextView
@@ -190,8 +175,6 @@
                         android:background="@color/gf_purple_soft"
                         android:gravity="center"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginStart="3dp"
                         android:padding="4dp">
 
                         <TextView
@@ -224,8 +207,6 @@
                         android:background="@color/gf_purple_soft"
                         android:gravity="center"
                         android:layout_marginBottom="6dp"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginStart="3dp"
                         android:padding="4dp">
 
                         <TextView
@@ -242,10 +223,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
-
             </LinearLayout>
 
-            <!-- CARD VISÃO RÁPIDA -->
+            <!-- Card Resumo Financeiro -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -260,76 +240,137 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:text="Visão rápida"
+                        android:id="@+id/tvResumoTitulo"
+                        android:text="Resumo financeiro"
                         android:textStyle="bold"
                         android:textSize="15sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
+                    <!-- Falta pagar -->
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
                         android:layout_marginTop="10dp">
 
-                        <LinearLayout
+                        <TextView
+                            android:text="Falta pagar"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:textColor="#6B7280" />
 
-                            <TextView
-                                android:text="Receitas"
-                                android:textColor="#6B7280"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/tvHomeFaltaPagar"
+                            android:text="R$ 0,00"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tvHomeIncome"
-                                android:text="R$ 0,00"
-                                android:textColor="@color/gf_green"
-                                android:textStyle="bold"
-                                android:textSize="16sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
+                    <!-- Gastos totais -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
 
-                        <LinearLayout
+                        <TextView
+                            android:text="Gastos totais"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:textColor="#6B7280" />
 
-                            <TextView
-                                android:text="Despesas"
-                                android:textColor="#6B7280"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/tvHomeTotalPagar"
+                            android:text="R$ 0,00"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tvHomeExpense"
-                                android:text="R$ 0,00"
-                                android:textColor="#DC2626"
-                                android:textStyle="bold"
-                                android:textSize="16sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-                        </LinearLayout>
+                    <!-- Total a ser recebido -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <TextView
+                            android:text="Total a ser recebido"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#6B7280" />
+
+                        <TextView
+                            android:id="@+id/tvHomeTotalReceber"
+                            android:text="R$ 0,00"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!-- Total recebido -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <TextView
+                            android:text="Total recebido"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#6B7280" />
+
+                        <TextView
+                            android:id="@+id/tvHomeTotalMes"
+                            android:text="R$ 0,00"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!-- Total em conta -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <TextView
+                            android:text="Total em conta"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#6B7280" />
+
+                        <TextView
+                            android:id="@+id/tvHomeTotalConta"
+                            android:text="R$ 0,00"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
 
                     <Button
                         android:id="@+id/btnGoSummary"
                         android:text="Ver resumo completo"
                         android:textAllCaps="false"
-                        android:layout_marginTop="14dp"
+                        android:layout_marginTop="16dp"
                         android:backgroundTint="@color/gf_purple"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
         </LinearLayout>
     </ScrollView>
 
-    <!-- HOTBAR -->
+    <!-- hot bar -->
     <fragment
         android:id="@+id/fragHotbar"
         android:name="com.alex.granaflow7.HotbarFragment"

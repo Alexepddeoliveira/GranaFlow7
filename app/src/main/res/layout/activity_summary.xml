@@ -6,13 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Topo -->
     <LinearLayout
         android:orientation="vertical"
         android:background="@color/gf_purple_dark"
         android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="130dp">
 
         <TextView
             android:text="Resumo"
@@ -23,14 +22,13 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:text="Veja o total de receitas e despesas"
+            android:text="Valores do período selecionado"
             android:textColor="@color/gf_purple_soft"
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <!-- Conteúdo -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -42,7 +40,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Receitas -->
+            <!-- Filtro mês/ano -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:gravity="center_vertical">
+
+                <Spinner
+                    android:id="@+id/spMonthSummary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Spinner
+                    android:id="@+id/spYearSummary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+
+            <!-- Falta pagar -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,45 +77,14 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:text="Receitas"
-                        android:textSize="16sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/tvIncome"
-                        android:text="R$ 0,00"
-                        android:textSize="22sp"
+                        android:text="Falta pagar"
+                        android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="@color/gf_green"
-                        android:layout_marginTop="6dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Despesas -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:text="Despesas"
-                        android:textSize="16sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:id="@+id/tvExpense"
+                        android:id="@+id/tvFaltaPagar"
                         android:text="R$ 0,00"
                         android:textSize="22sp"
                         android:textStyle="bold"
@@ -106,7 +95,106 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Saldo -->
+            <!-- Gastos totais -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Gastos totais"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvTotalPagar"
+                        android:text="R$ 0,00"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="#DC2626"
+                        android:layout_marginTop="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Total a ser recebido -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Total a ser recebido"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvTotalReceber"
+                        android:text="R$ 0,00"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gf_green"
+                        android:layout_marginTop="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Total recebido -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Total recebido"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvTotalMes"
+                        android:text="R$ 0,00"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gf_purple_dark"
+                        android:layout_marginTop="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Total em conta + compartilhar -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -120,13 +208,14 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:text="Saldo"
-                        android:textSize="16sp"
+                        android:text="Total em conta"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:id="@+id/tvBalance"
+                        android:id="@+id/tvTotalConta"
                         android:text="R$ 0,00"
                         android:textSize="22sp"
                         android:textStyle="bold"
@@ -140,6 +229,7 @@
                         android:text="Compartilhar resumo"
                         android:textAllCaps="false"
                         android:layout_marginTop="16dp"
+                        android:backgroundTint="@color/gf_purple"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -148,7 +238,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- HOTBAR -->
+    <!-- Hot Bar -->
     <fragment
         android:id="@+id/fragHotbar"
         android:name="com.alex.granaflow7.HotbarFragment"
