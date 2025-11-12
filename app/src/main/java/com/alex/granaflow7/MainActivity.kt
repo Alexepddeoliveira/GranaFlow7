@@ -31,11 +31,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         dao = AppDatabase.getDatabase(this).launchDao()
-
-        val shortcutAdd = findViewById<LinearLayout>(R.id.shortcutAdd)
-        val shortcutList = findViewById<LinearLayout>(R.id.shortcutList)
-        val shortcutSummary = findViewById<LinearLayout>(R.id.shortcutSummary)
-        val shortcutAbout = findViewById<LinearLayout>(R.id.shortcutAbout)
         val btnGoSummary = findViewById<Button>(R.id.btnGoSummary)
         val btnGoCharts = findViewById<Button>(R.id.btnGoCharts)
 
@@ -72,18 +67,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        shortcutAdd.setOnClickListener {
-            startActivity(Intent(this, AddTransactionActivity::class.java))
-        }
-        shortcutList.setOnClickListener {
-            startActivity(Intent(this, ListActivity::class.java))
-        }
-        shortcutSummary.setOnClickListener {
-            startActivity(Intent(this, SummaryActivity::class.java))
-        }
-        shortcutAbout.setOnClickListener {
-            startActivity(Intent(this, AboutActivity::class.java))
-        }
         btnGoSummary.setOnClickListener {
             startActivity(Intent(this, SummaryActivity::class.java))
         }

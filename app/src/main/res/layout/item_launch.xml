@@ -3,26 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="3dp">
+    android:layout_marginBottom="0dp"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/gf_bg"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:orientation="vertical"
-        android:padding="12dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="14dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- título + pago/não pago -->
+        <!-- Título -->
         <TextView
             android:id="@+id/tvItemTitle"
             android:text="Título"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="15sp"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- data -->
+        <!-- Data -->
         <TextView
             android:id="@+id/tvItemDate"
             android:text="10/11/2025"
@@ -32,12 +37,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- valor -->
+        <!-- Valor -->
         <TextView
             android:id="@+id/tvItemAmount"
             android:text="R$ 0,00"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/gf_purple_dark"
+            android:layout_marginTop="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>

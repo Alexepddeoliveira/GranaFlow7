@@ -6,38 +6,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Header Roxo -->
     <LinearLayout
-        android:orientation="vertical"
-        android:background="@color/gf_purple_dark"
-        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="110dp">
+        android:layout_height="wrap_content"
+        android:background="@color/gf_purple_dark"
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Lançamentos"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textStyle="bold" />
 
         <TextView
-            android:text="Veja tudo que já foi adicionado"
-            android:textColor="@color/gf_purple_soft"
-            android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Veja tudo que já foi adicionado"
+            android:textColor="@color/gf_purple_soft" />
+
+        <!-- Ordenação -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ordenar:"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="8dp" />
+
+            <Spinner
+                android:id="@+id/spinnerSort"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+        </LinearLayout>
     </LinearLayout>
 
-    <!-- Lista -->
+    <!-- Container do Fragmento -->
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp" />
+        android:padding="0dp" />
 
-    <!-- Hot Bar-->
+    <!-- Hotbar -->
     <fragment
         android:id="@+id/fragHotbar"
         android:name="com.alex.granaflow7.HotbarFragment"

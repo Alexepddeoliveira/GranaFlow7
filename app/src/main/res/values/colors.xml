@@ -13,4 +13,28 @@
     <color name="gf_bg">#F3F4F6</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+
+    <!-- Cor primaria -->
+    <color name="md_theme_primary">@color/gf_purple</color>
+    <color name="md_theme_onPrimary">@color/white</color>
+    <color name="md_theme_primaryContainer">@color/gf_purple_soft</color>
+    <color name="md_theme_onPrimaryContainer">@color/gf_purple_dark</color>
+
+    <!-- Cor segundaria-->
+    <color name="md_theme_secondary">@color/gf_green</color>
+    <color name="md_theme_onSecondary">@color/white</color>
+    <color name="md_theme_secondaryContainer">@color/gf_green_soft</color>
+    <color name="md_theme_onSecondaryContainer">@color/gf_green</color>
+
+    <!-- Superfícies / texto -->
+    <color name="md_theme_background">@color/gf_bg</color>
+    <color name="md_theme_onBackground">#121212</color>
+    <color name="md_theme_surface">@color/white</color>
+    <color name="md_theme_onSurface">#1A1A1A</color>
+    <color name="md_theme_surfaceVariant">#F2F2F5</color>
+    <color name="md_theme_onSurfaceVariant">#4B4B4B</color>
+    <color name="md_theme_outline">#E6E6EA</color>
+    <color name="md_theme_error">#B00020</color>
+    <color name="md_theme_onError">@color/white</color>
+
 </resources>
