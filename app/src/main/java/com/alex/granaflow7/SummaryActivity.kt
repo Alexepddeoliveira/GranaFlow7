@@ -8,6 +8,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.*
+import android.view.GestureDetector
+import androidx.core.view.GestureDetectorCompat
+import android.view.MotionEvent
 
 class SummaryActivity : AppCompatActivity() {
 
@@ -22,6 +25,7 @@ class SummaryActivity : AppCompatActivity() {
     private lateinit var spYear: Spinner
     private lateinit var btnShare: Button
     private lateinit var btnVerGrafico: Button
+    private lateinit var gestureDetector: GestureDetectorCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +49,7 @@ class SummaryActivity : AppCompatActivity() {
             shareSummary()
         }
 
-        // abre a tela do gráfico com o mês/ano escolhidos
+        // abre a tela do gráfico com o mês/ano escolhidos (Gráficos fica fora do carrossel)
         btnVerGrafico.setOnClickListener {
             val month = spMonth.selectedItemPosition + 1
             val year = spYear.selectedItem.toString().toInt()
@@ -54,6 +58,42 @@ class SummaryActivity : AppCompatActivity() {
             intent.putExtra("year", year)
             startActivity(intent)
         }
+
+        //Summary -> (List, Main)
+        gestureDetector = GestureDetectorCompat(this, object : GestureDetector.SimpleOnGestureListener() {
+            private val SWIPE_DISTANCE = 120
+            private val SWIPE_VELOCITY = 200
+
+            override fun onDown(e: MotionEvent): Boolean {
+                return true
+            }
+
+            override fun onFling(
+                e1: MotionEvent?,
+                e2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                val startX = e1?.x ?: e2.x
+                val startY = e1?.y ?: e2.y
+                val diffX = e2.x - startX
+                val diffY = e2.y - startY
+
+                val isHorizontal = kotlin.math.abs(diffX) > kotlin.math.abs(diffY)
+                val passedDistance = kotlin.math.abs(diffX) > SWIPE_DISTANCE
+                val passedVelocity = kotlin.math.abs(velocityX) > SWIPE_VELOCITY
+
+                if (isHorizontal && passedDistance && passedVelocity) {
+                    if (diffX < 0) {
+                        goToNextTab()
+                    } else {
+                        goToPreviousTab()
+                    }
+                    return true
+                }
+                return false
+            }
+        })
     }
 
     private fun setupSpinners() {
@@ -171,5 +211,25 @@ class SummaryActivity : AppCompatActivity() {
         }
 
         startActivity(Intent.createChooser(sendIntent, "Compartilhar resumo"))
+    }
+
+    // <--- Navegação do carrossel --->
+    private fun goToNextTab() {
+        // Summary → Main
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    private fun goToPreviousTab() {
+        // Summary ← List
+        startActivity(Intent(this, ListActivity::class.java))
+        finish()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (::gestureDetector.isInitialized) {
+            gestureDetector.onTouchEvent(ev)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }

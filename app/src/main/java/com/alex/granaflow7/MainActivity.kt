@@ -1,5 +1,8 @@
 package com.alex.granaflow7
 
+import android.view.GestureDetector
+import androidx.core.view.GestureDetectorCompat
+import android.view.MotionEvent
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -20,6 +23,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvHomeTotalConta: TextView
     private lateinit var tvResumoTitulo: TextView
     private lateinit var dao: LaunchDao
+
+    private lateinit var gestureDetector: GestureDetectorCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +48,30 @@ class MainActivity : AppCompatActivity() {
         tvResumoTitulo = findViewById(R.id.tvResumoTitulo)
 
         // navegação
+        gestureDetector = GestureDetectorCompat(this, object : GestureDetector.SimpleOnGestureListener() {
+            private val SWIPE_DISTANCE = 120
+            private val SWIPE_VELOCITY = 200
+            override fun onFling(
+                e1: MotionEvent?,
+                e2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                val startX = e1?.x ?: e2.x
+                val diffX = e2.x - startX
+                val diffY = e2.y - (e1?.y ?: e2.y)
+
+                if (kotlin.math.abs(diffX) > kotlin.math.abs(diffY) &&
+                    kotlin.math.abs(diffX) > SWIPE_DISTANCE &&
+                    kotlin.math.abs(velocityX) > SWIPE_VELOCITY
+                ) {
+                    if (diffX < 0) goToNextTab() else goToPreviousTab()
+                    return true
+                }
+                return false
+            }
+        })
+
         shortcutAdd.setOnClickListener {
             startActivity(Intent(this, AddTransactionActivity::class.java))
         }
@@ -121,4 +150,23 @@ class MainActivity : AppCompatActivity() {
         tvHomeTotalMes.text = "R$ %.2f".format(totalRecebido)
         tvHomeTotalConta.text = "R$ %.2f".format(totalConta)
     }
+
+    private fun goToNextTab() {
+        // Home → AddTransaction
+        startActivity(Intent(this, AddTransactionActivity::class.java))
+        finish()
+    }
+    private fun goToPreviousTab() {
+        // Home ← Resumo
+        startActivity(Intent(this, SummaryActivity::class.java))
+        finish()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (::gestureDetector.isInitialized) {
+            gestureDetector.onTouchEvent(ev)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+
 }

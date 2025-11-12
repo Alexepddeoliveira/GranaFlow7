@@ -1,5 +1,9 @@
 package com.alex.granaflow7
 
+import android.view.GestureDetector
+import androidx.core.view.GestureDetectorCompat
+import android.view.MotionEvent
+import android.content.Intent
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -18,15 +22,13 @@ class AddTransactionActivity : AppCompatActivity() {
     private lateinit var spCategory: Spinner
     private lateinit var btnSave: Button
     private lateinit var btnCancel: Button
-
-    // novos
     private lateinit var tvDate: TextView
     private lateinit var btnPickDate: Button
-
     private lateinit var dao: LaunchDao
-
     private val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     private val selectedCal: Calendar = Calendar.getInstance()
+
+    private lateinit var gestureDetector: GestureDetectorCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +54,46 @@ class AddTransactionActivity : AppCompatActivity() {
         setupDatePicker()
 
         btnCancel.setOnClickListener { finish() }
+        btnSave.setOnClickListener { saveTransaction() }
 
-        btnSave.setOnClickListener {
-            saveTransaction()
-        }
+        // === SWIPE NAV: Add ↔ (Main, List) ===
+        gestureDetector = GestureDetectorCompat(this, object : GestureDetector.SimpleOnGestureListener() {
+            private val SWIPE_DISTANCE = 120
+            private val SWIPE_VELOCITY = 200
+
+            override fun onDown(e: MotionEvent): Boolean {
+                // Precisa retornar true para que o detector considere os próximos eventos (onFling incluso)
+                return true
+            }
+
+            override fun onFling(
+                e1: MotionEvent?,  // pode ser null dependendo do dispatcher
+                e2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                val startX = e1?.x ?: e2.x
+                val startY = e1?.y ?: e2.y
+                val diffX = e2.x - startX
+                val diffY = e2.y - startY
+
+                val isHorizontal = kotlin.math.abs(diffX) > kotlin.math.abs(diffY)
+                val passedDistance = kotlin.math.abs(diffX) > SWIPE_DISTANCE
+                val passedVelocity = kotlin.math.abs(velocityX) > SWIPE_VELOCITY
+
+                if (isHorizontal && passedDistance && passedVelocity) {
+                    if (diffX < 0) {
+                        // próxima
+                        goToNextTab()
+                    } else {
+                        // anterior
+                        goToPreviousTab()
+                    }
+                    return true
+                }
+                return false
+            }
+        })
     }
 
     private fun setupDatePicker() {
@@ -109,7 +147,6 @@ class AddTransactionActivity : AppCompatActivity() {
                     showNewCategoryDialog(categories, adapter)
                 }
             }
-
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
@@ -168,5 +205,25 @@ class AddTransactionActivity : AppCompatActivity() {
         dao.insert(newLaunch)
         Toast.makeText(this, "Lançamento adicionado!", Toast.LENGTH_SHORT).show()
         finish()
+    }
+
+    // <--- Navegação do carrossel --->
+    private fun goToNextTab() {
+        // Add → List (Lançamentos)
+        startActivity(Intent(this, ListActivity::class.java))
+        finish() // opcional: mantém comportamento "tab", sem empilhar
+    }
+
+    private fun goToPreviousTab() {
+        // Add ← Main (Home)
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        if (::gestureDetector.isInitialized) {
+            gestureDetector.onTouchEvent(ev)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 }
