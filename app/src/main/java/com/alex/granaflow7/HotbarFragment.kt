@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 
 class HotbarFragment : Fragment() {
@@ -40,8 +42,33 @@ class HotbarFragment : Fragment() {
 
         highlightCurrentScreen(view)
 
+        // aplica o padding de acordo com a barra de navegação / gestos
+        applyBottomInsets(view)
+
         return view
     }
+
+    private fun applyBottomInsets(root: View) {
+        // guarda o padding original UMA vez
+        val startPaddingBottom = root.paddingBottom
+
+        ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
+            val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            val navBottom = insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom
+            val extraBottom = maxOf(imeBottom, navBottom)
+            v.setPadding(
+                v.paddingLeft,
+                v.paddingTop,
+                v.paddingRight,
+                startPaddingBottom + extraBottom
+            )
+            insets
+        }
+
+        // garante que o listener rode ao anexar a view
+        ViewCompat.requestApplyInsets(root)
+    }
+
 
     private fun highlightCurrentScreen(root: View) {
         val current = activity?.javaClass?.simpleName ?: return
