@@ -28,7 +28,7 @@ Permite adicionar lançamentos, listar transações, visualizar resumo e abrir l
 - Material Design Components  
 
 ## Prints do app
-- Tela Princiapal
+- Tela Principal
 <img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/4b5f6382-649d-424f-b9fb-4284866504d7" />
 
 
