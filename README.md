@@ -27,7 +27,7 @@ Permite adicionar lançamentos, listar transações, visualizar resumo e abrir l
 - Room (persistência local)  
 - Material Design Components  
 
-## Prints do app
+## Prints do app com dados fictícios para ilustração
 - Tela Principal
 <img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/4b5f6382-649d-424f-b9fb-4284866504d7" />
 
@@ -61,6 +61,8 @@ Permite adicionar lançamentos, listar transações, visualizar resumo e abrir l
 
 - Compartilhar Grafico
   <img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/cfc43241-1525-4636-aacf-68633e6ce19d" />
+
+
 
   <img width="978" height="731" alt="image" src="https://github.com/user-attachments/assets/86db8106-a03a-46ae-8efb-6ebc64f04749" />
 
