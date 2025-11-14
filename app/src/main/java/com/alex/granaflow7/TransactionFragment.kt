@@ -24,9 +24,10 @@ class TransactionFragment : Fragment() {
     private lateinit var btnFilterIncomes: Button
     private lateinit var tvTotal: TextView
     private lateinit var containerList: LinearLayout
+    private lateinit var btnSort: ImageButton
 
-    // 0 = todos, 1 = despesas, 2 = receitas
     private var currentCategoryFilter = 0
+    private var sortToggle = 0 // 0 = sem ordenação; 1 = pagos primeiro; 2 = não pagos primeiro
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,9 +47,15 @@ class TransactionFragment : Fragment() {
 
         tvTotal = view.findViewById(R.id.tvTotal)
         containerList = view.findViewById(R.id.containerList)
+        btnSort = view.findViewById(R.id.btnSort)
 
         setupMonthYearSpinners()
         setupCategoryButtons()
+
+        btnSort.setOnClickListener {
+            sortToggle = if (sortToggle == 1) 2 else 1
+            updateList()
+        }
 
         updateList()
 
@@ -137,7 +144,6 @@ class TransactionFragment : Fragment() {
         val selectedMonth = spMonth.selectedItemPosition + 1
         val selectedYear = spYear.selectedItem.toString().toInt()
 
-        // 1) filtra por mês/ano
         val filteredByDate = allLaunches.filter { launch ->
             try {
                 val d = sdf.parse(launch.date)
@@ -150,27 +156,31 @@ class TransactionFragment : Fragment() {
             }
         }
 
-        // 2) filtra por categoria
-        val finalList = when (currentCategoryFilter) {
-            1 -> filteredByDate.filter { !it.isIncome }  // despesas
-            2 -> filteredByDate.filter { it.isIncome }   // receitas
+        val baseList = when (currentCategoryFilter) {
+            1 -> filteredByDate.filter { !it.isIncome }
+            2 -> filteredByDate.filter { it.isIncome }
             else -> filteredByDate
         }
 
-        tvTotal.text = "Total de lançamentos: ${finalList.size}"
+        val orderedList = when (sortToggle) {
+            1 -> baseList.sortedByDescending { it.isPaid }
+            2 -> baseList.sortedBy { it.isPaid }
+            else -> baseList
+        }
+
+        tvTotal.text = "Total de lançamentos: ${orderedList.size}"
         containerList.removeAllViews()
 
         val inflater = LayoutInflater.from(requireContext())
 
-        for (launch in finalList) {
+        for (launch in orderedList) {
             val card = inflater.inflate(R.layout.item_launch, containerList, false) as MaterialCardView
 
             val tvTitle = card.findViewById<TextView>(R.id.tvItemTitle)
             val tvAmount = card.findViewById<TextView>(R.id.tvItemAmount)
             val tvDate = card.findViewById<TextView>(R.id.tvItemDate)
 
-            // título com status pago / não pago
-            val pagoPrefix = if (launch.isPaid) "✔ " else "❌ "
+            val pagoPrefix = if (launch.isPaid) "✔  " else "❌  "
             tvTitle.text = pagoPrefix + launch.title
 
             tvAmount.text = "R$ %.2f".format(launch.amount)
@@ -179,7 +189,6 @@ class TransactionFragment : Fragment() {
 
             tvDate.text = launch.date
 
-            //Clicar no card
             card.setOnClickListener {
                 showActionDialog(launch)
             }

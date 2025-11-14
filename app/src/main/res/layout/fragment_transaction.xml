@@ -57,6 +57,17 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="12dp" />
+
+                        <ImageButton
+                            android:id="@+id/btnSort"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="12dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Ordenar"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_ordenar"
+                            app:tint="@color/gf_purple_dark" />
                     </LinearLayout>
 
                     <!-- Categoria -->
