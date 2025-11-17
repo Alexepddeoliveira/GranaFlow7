@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Quiz Financeiro"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- Pergunta 1 -->
+        <TextView
+            android:text="1) Quando você recebe, o que faz primeiro?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioGroup
+            android:id="@+id/rgQ1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rbQ1Op1"
+                android:text="Gasto sem pensar" />
+
+            <RadioButton
+                android:id="@+id/rbQ1Op2"
+                android:text="Pago contas e vejo se dá pra guardar" />
+
+            <RadioButton
+                android:id="@+id/rbQ1Op3"
+                android:text="Separo para guardar primeiro" />
+        </RadioGroup>
+
+        <!-- Pergunta 2 -->
+        <TextView
+            android:layout_marginTop="16dp"
+            android:text="2) Você tem reserva de emergência?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioGroup
+            android:id="@+id/rgQ2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rbQ2Op1"
+                android:text="Não" />
+
+            <RadioButton
+                android:id="@+id/rbQ2Op2"
+                android:text="Sim, guardo sempre" />
+
+            <RadioButton
+                android:id="@+id/rbQ2Op3"
+                android:text="Já tive, hoje não" />
+        </RadioGroup>
+
+        <!-- Pergunta 3 -->
+        <TextView
+            android:layout_marginTop="16dp"
+            android:text="3) Como você usa o cartão de crédito?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioGroup
+            android:id="@+id/rgQ3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rbQ3Op1"
+                android:text="Pago tudo em dia e evito juros" />
+
+            <RadioButton
+                android:id="@+id/rbQ3Op2"
+                android:text="Pago só o mínimo às vezes" />
+
+            <RadioButton
+                android:id="@+id/rbQ3Op3"
+                android:text="Nem olho muito a fatura" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnEnviarQuiz"
+            android:text="Ver resultado"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvResultadoQuiz"
+            android:text=""
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <!-- Hot Bar -->
+        <fragment
+            android:id="@+id/fragHotbar"
+            android:name="com.alex.granaflow7.HotbarFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</ScrollView>

@@ -190,6 +190,44 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
+                    <!-- Resto do mês (saldo do período) -->
+                    <TextView
+                        android:text="Resto do mês (saldo do período)"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvRestoMes"
+                        android:text="R$ 0,00"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gf_purple_dark"
+                        android:layout_marginTop="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Sobra do mês anterior -->
+                    <TextView
+                        android:text="Sobra do mês anterior"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvSobraMesAnterior"
+                        android:text="R$ 0,00"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gf_purple_dark"
+                        android:layout_marginTop="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
                     <!-- Botões -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnShare"
@@ -206,6 +244,16 @@
                         android:textAllCaps="false"
                         android:layout_marginTop="8dp"
                         android:backgroundTint="@color/gf_purple_dark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <!-- Quiz financeiro -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnQuizFinanceiro"
+                        android:text="Fazer quiz financeiro"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="@color/gf_purple"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
