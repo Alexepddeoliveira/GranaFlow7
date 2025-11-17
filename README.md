@@ -27,25 +27,49 @@ Permite adicionar lançamentos, listar transações, visualizar resumo e abrir l
 - Room (persistência local)  
 - Material Design Components  
 
-## Prints do app
-- Tela Princiapl
-<img width="428" height="889" alt="image" src="https://github.com/user-attachments/assets/aabe2008-4fc0-40d1-ab64-62fae1a6c524" />
+## Prints do app com dados fictícios para ilustração
+- Tela Principal
+<img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/4b5f6382-649d-424f-b9fb-4284866504d7" />
 
 
 - Novos lançamentos
-<img width="438" height="890" alt="Captura de tela 2025-11-10 173326" src="https://github.com/user-attachments/assets/e6a46613-74d6-4ea2-8ce8-52bdc96adb41" />
+<img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/9229e0f3-5a9b-43fe-bc81-689d3444f49d" />
+
 
 
 - Lançamentos
-<img width="443" height="893" alt="Captura de tela 2025-11-10 173341" src="https://github.com/user-attachments/assets/b486eddb-37f6-4f80-96d9-fdf547155e8b" />
+<img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/2a8d211f-d4a4-4d8d-b722-b0ec5f4fe254" />
+
+<img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/fe05c5f7-42bf-48a6-b015-bf718a5f5af4" />
+
+<img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/9ebdc909-8ecd-4e6a-b0f6-a87bc11a69c7" />
 
 
 - Resumo
-<img width="452" height="884" alt="Captura de tela 2025-11-10 173402" src="https://github.com/user-attachments/assets/8c2a7497-5060-40e8-9a2b-4c0d7c8557ac" />
+<img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/d8c7c14b-cf26-4933-a444-a07cd988dc10" />
 
 
 - Compartilhar Resumo
-<img width="456" height="888" alt="image" src="https://github.com/user-attachments/assets/bb9b2fdb-cfb8-4ad4-9d5f-4b937083d847" />
+<img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/f3730285-8d8f-4c0c-9006-52650a95e947" />
+
+
+- Ver gráfico
+<img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/2754bbef-58eb-44e1-bb57-9cb50ac009f0" />
+
+<img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/ac2e1604-facd-4a32-88df-a69ea2ef9ed3" />
+
+
+- Compartilhar Grafico
+  <img width="738" height="1600" alt="image" src="https://github.com/user-attachments/assets/cfc43241-1525-4636-aacf-68633e6ce19d" />
+
+
+
+  <img width="978" height="731" alt="image" src="https://github.com/user-attachments/assets/86db8106-a03a-46ae-8efb-6ebc64f04749" />
+
+
+
+
+
 
 
 ---
